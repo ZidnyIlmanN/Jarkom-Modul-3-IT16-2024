@@ -14,13 +14,6 @@
 Buat topologi seperti di atas sesuai dengan yang ditentukan.
 
 
-## 1. Setup node
-
-Untuk membantu pertempuran di Erangel, kamu ditugaskan untuk membuat jaringan komputer yang akan digunakan sebagai alat komunikasi. Sesuaikan rancangan Topologi dengan rancangan dan pembagian yang berada di link yang telah disediakan, dengan ketentuan nodenya sebagai berikut :
-1. DNS Master akan diberi nama Sriwijaya, sesuai dengan kota tempat dibuatnya server tersebut
-2. Karena ada kemungkinan musuh akan mencoba menyerang Server Utama, maka buatlah DNS Slave Majapahit yang mengarah ke Sriwijaya
-3. Markas pusat juga meminta dibuatkan dua Web Server yaitu Tanjungkulai, dan Bedahulu. Sedangkan Solok akan bertindak sebagai Load Balancer untuk server-server tersebut
-
 Network Configuration tiap node seperti di bawah ini:
 
 ## Router
