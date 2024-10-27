@@ -10,7 +10,7 @@
 
 # Setup Topologi
 
-![alt text](./image/topologi.png)
+![alt text](./topologi.png)
 Buat topologi seperti di atas sesuai dengan yang ditentukan.
 
 
