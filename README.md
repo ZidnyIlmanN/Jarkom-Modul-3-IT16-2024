@@ -1,326 +1,650 @@
 # Jarkom-Modul-3-IT16-2024
 
-# Anggota
+| Nama          | NRP          |
+| ------------- | ------------ |
+| Zidny Ilman Nafi'an | 5027221072 |
+| MUHAMMAD DZAKWAN | 5027201065 |
 
-| Nama                            | NRP          |
-| ------------------------------- | ------------ |
-| Zidny Ilman Nafi'an | `5027221072` |
-| MUHAMMAD DZAKWAN | `5027201065` |
+## Topologi
+![image](https://github.com/user-attachments/assets/5c666d1f-6e19-4458-9d88-44dc505a71dc)
 
+## Config
+Config setiap node
 
-# Setup Topologi
+### Paradis (DHCP Relay)
 
-![alt text](./topologi.png)
-Buat topologi seperti di atas sesuai dengan yang ditentukan.
-
-
-Network Configuration tiap node seperti di bawah ini:
-
-## Router
-
-### Paradis
-```
+```markdown
 auto eth0
 iface eth0 inet dhcp
+up iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE -s 192.237.0.0/16
+up echo nameserver 192.168.122.1 > /etc/resolv.conf
 
 auto eth1
 iface eth1 inet static
-	address 192.241.1.1
+	address 192.237.1.1
 	netmask 255.255.255.0
 
 auto eth2
 iface eth2 inet static
-	address 192.241.2.1
+	address 192.237.2.1
 	netmask 255.255.255.0
 
 auto eth3
 iface eth3 inet static
-	address 192.241.3.1
+	address 192.237.3.1
 	netmask 255.255.255.0
 
 auto eth4
 iface eth4 inet static
-	address 192.241.4.1
+	address 192.237.4.1
 	netmask 255.255.255.0
 ```
 
-### Annie
+### Tybur (DHCP Server)
 
-```
+```markdown
 auto eth0
 iface eth0 inet static
-	address 192.241.1.2
-	netmask 255.255.255.0
-	gateway 192.241.1.1
+address 192.237.4.2
+netmask 255.255.255.0
+gateway 192.237.4.1
+up echo nameserver 192.168.122.1 > /etc/resolv.conf
 ```
 
-### Bertholdt
+### Fritz (DNS Server)
 
-```
+```markdown
 auto eth0
 iface eth0 inet static
-	address 192.241.1.3
-	netmask 255.255.255.0
-	gateway 192.241.1.1
+address 192.237.4.3
+netmask 255.255.255.0
+gateway 192.237.4.1
+up echo nameserver 192.168.122.1 > /etc/resolv.conf
 ```
 
-### Reiner
+### Warhammer (database)
 
-```
+```markdown
 auto eth0
 iface eth0 inet static
-	address 192.241.1.4
-	netmask 255.255.255.0
-	gateway 192.241.2.1
+address 192.237.3.2
+netmask 255.255.255.0
+gateway 192.237.3.1
+up echo nameserver 192.237.4.3 > /etc/resolv.conf
+up echo nameserver 192.168.122.1 > /etc/resolv.conf
 ```
 
-### Zeke
+### Beast (LoadBalancer Laravel)
 
-```
+```markdown
 auto eth0
 iface eth0 inet static
-	address 192.241.1.5
-	netmask 255.255.255.0
-	gateway 192.241.2.1
+address 192.237.3.4
+netmask 255.255.255.0
+gateway 192.237.3.1
+up echo nameserver 192.237.4.3 > /etc/resolv.conf
+up echo nameserver 192.168.122.1 > /etc/resolv.conf
+
 ```
 
-### Beast
+### Colossal (LoadBalancer PHP)
 
-```
+```markdown
 auto eth0
 iface eth0 inet static
-	address 192.241.2.2
-	netmask 255.255.255.0
-	gateway 192.241.2.1
+address 192.237.3.3
+netmask 255.255.255.0
+gateway 192.237.3.1
+up echo nameserver 192.237.4.3 > /etc/resolv.conf
+up echo nameserver 192.168.122.1 > /etc/resolv.conf
 ```
 
-### Colossal
-```
+### Annie (Laravel Worker)
+
+```markdown
 auto eth0
 iface eth0 inet static
-	address 192.241.2.3
-	netmask 255.255.255.0
-	gateway 192.241.2.1
+address 192.237.1.2
+netmask 255.255.255.0
+gateway 192.237.1.1
+up echo nameserver 192.237.4.3 > /etc/resolv.conf
+up echo nameserver 192.168.122.1 > /etc/resolv.conf
+
 ```
 
-### Warhammer
+### Bertholdt (Laravel Worker)
 
-```
+```markdown
 auto eth0
 iface eth0 inet static
-	address 192.241.2.4
-	netmask 255.255.255.0
-	gateway 192.241.2.1
+address 192.237.1.3
+netmask 255.255.255.0
+gateway 192.237.1.1
+up echo nameserver 192.237.4.3 > /etc/resolv.conf
+up echo nameserver 192.168.122.1 > /etc/resolv.conf
+
 ```
 
-### Tybur
+### Reiner (Laravel Worker)
 
-```
+```markdown
 auto eth0
 iface eth0 inet static
-	address 192.241.3.2
-	netmask 255.255.255.0
-	gateway 192.241.3.1
+address 192.237.1.4
+netmask 255.255.255.0
+gateway 192.237.1.1
+up echo nameserver 192.237.4.3 > /etc/resolv.conf
+up echo nameserver 192.168.122.1 > /etc/resolv.conf
 ```
 
-### Fritz
+### Armin (PHP Worker)
 
-```
+```markdown
 auto eth0
 iface eth0 inet static
-	address 192.241.3.3
-	netmask 255.255.255.0
-	gateway 192.241.3.1
+address 192.237.2.2
+netmask 255.255.255.0
+gateway 192.237.2.1
+up echo nameserver 192.237.4.3 > /etc/resolv.conf
+up echo nameserver 192.168.122.1 > /etc/resolv.conf
 ```
 
-### Erwin
+### Eren (PHP Worker)
 
-```
+```markdown
 auto eth0
 iface eth0 inet static
-	address 192.241.4.2
-	netmask 255.255.255.0
-	gateway 192.241.4.1
+address 192.237.2.3
+netmask 255.255.255.0
+gateway 192.237.2.1
+up echo nameserver 192.237.4.3 > /etc/resolv.conf
+up echo nameserver 192.168.122.1 > /etc/resolv.conf
 ```
 
-### Mikasa
+### Mikasa (PHP Worker)
 
-```
+```markdown
 auto eth0
 iface eth0 inet static
-	address 192.241.4.3
-	netmask 255.255.255.0
-	gateway 192.241.4.1
+address 192.237.2.4
+netmask 255.255.255.0
+gateway 192.237.2.1
+up echo nameserver 192.237.4.3 > /etc/resolv.conf
+up echo nameserver 192.168.122.1 > /etc/resolv.conf
 ```
 
-### Eren
+### Zeke (Client)
 
-```
+```markdown
 auto eth0
-iface eth0 inet static
-	address 192.241.4.4
-	netmask 255.255.255.0
-	gateway 192.241.4.1
+iface eth0 inet dhcp
 ```
 
-### Armin
+### Erwin (Client)
 
-```
+```markdown
 auto eth0
-iface eth0 inet static
-	address 192.241.4.5
-	netmask 255.255.255.0
-	gateway 192.241.4.1
+iface eth0 inet dhcp
+
 ```
 
-# Konfigurasi Jaringan Kaum Marley dan Eldia
+## Nomor 0
+Membuat script di Fritz agar domain [marley.it08.com](http://marley.it08.com) ke IP Annie dan [eldia.it08.com](http://eldia.it08.com) ke IP Armin
 
-## 1. Konfigurasi DHCP Server (Tybur)
-- Client yang melalui bangsa Marley mendapatkan range IP dari `[prefix IP].1.05 - [prefix IP].1.25` dan `[prefix IP].1.50 - [prefix IP].1.100`.
-- Client yang melalui bangsa Eldia mendapatkan range IP dari `[prefix IP].2.09 - [prefix IP].2.27` dan `[prefix IP].2.81 - [prefix IP].2.243`.
-- DNS Server diarahkan ke keluarga Fritz, sehingga client dapat terhubung ke internet.
-- Lease time untuk bangsa Eldia diatur selama 6 menit, dan untuk bangsa Marley selama 30 menit, dengan maksimum 87 menit.
-   - Instalasi DHCP server:
-     ```bash
-     sudo apt update
-     sudo apt install isc-dhcp-server -y
-     ```
+```markdown
+apt-get update
+apt-get install bind9 -y
 
-   - Edit konfigurasi di `/etc/dhcp/dhcpd.conf` untuk menetapkan range IP:
-     ```bash
-     # File: /etc/dhcp/dhcpd.conf
+forward="options {
+directory \"/var/cache/bind\";
+forwarders {
+  	   192.168.122.1;
+};
 
-     default-lease-time 1800; # Untuk kaum Marley (30 menit)
-     max-lease-time 5220;     # Waktu maksimal (87 menit)
-     option domain-name-servers [IP Fritz];
+allow-query{any;};
+listen-on-v6 { any; };
+};
+"
+echo "$forward" > /etc/bind/named.conf.options
 
-     # Subnet Kaum Marley
-     subnet [prefix IP].1.0 netmask 255.255.255.0 {
-       range [prefix IP].1.5 [prefix IP].1.25;
-       range [prefix IP].1.50 [prefix IP].1.100;
-       default-lease-time 1800;
-     }
+echo "zone \"marley.it08.com\" {
+	type master;
+	file \"/etc/bind/jarkom/marley.it08.com\";
+};
 
-     # Subnet Kaum Eldia
-     subnet [prefix IP].2.0 netmask 255.255.255.0 {
-       range [prefix IP].2.9 [prefix IP].2.27;
-       range [prefix IP].2.81 [prefix IP].2.243;
-       default-lease-time 360;  # 6 menit
-     }
-     ```
+zone \"eldia.it08.com\" {
+	type master;
+	file \"/etc/bind/jarkom/eldia.it08.com\";
+};
+" > /etc/bind/named.conf.local
 
-   - Restart DHCP server:
-     ```bash
-     sudo systemctl restart isc-dhcp-server
-     ```
+mkdir /etc/bind/jarkom
 
-## 2. Konfigurasi DNS Server (Fritz)
-   - Instalasi DNS server:
-     ```bash
-     sudo apt update
-     sudo apt install bind9 -y
-     ```
+riegel="
+;
+;BIND data file for local loopback interface
+;
+\$TTL    604800
+@    IN    SOA    marley.it08.com. root.marley.it08.com. (
+        2        ; Serial
+                604800        ; Refresh
+                86400        ; Retry
+                2419200        ; Expire
+                604800 )    ; Negative Cache TTL
+;                   
+@    IN    NS    marley.it08.com.
+@       IN    A    192.237.1.2
+"
+echo "$riegel" > /etc/bind/jarkom/marley.it08.com
 
-   - Edit `/etc/bind/named.conf.options` untuk menambahkan forwarding DNS:
-     ```bash
-     options {
-       directory "/var/cache/bind";
-       forwarders { 8.8.8.8; };
-       dnssec-validation auto;
-       listen-on-v6 { any; };
-     };
-     ```
+granz="
+;
+;BIND data file for local loopback interface
+;
+\$TTL    604800
+@    IN    SOA    eldia.it08.com. root.eldia.it08.com. (
+        2        ; Serial
+                604800        ; Refresh
+                86400        ; Retry
+                2419200        ; Expire
+                604800 )    ; Negative Cache TTL
+;                   
+@    IN    NS    eldia.it08.com.
+@       IN    A    192.237.2.2
+"
+echo "$granz" > /etc/bind/jarkom/eldia.it08.com
 
-   - Restart DNS server:
-     ```bash
-     sudo systemctl restart bind9
-     ```
+service bind9 restart
+```
 
-## 3. Deployment Docker Image untuk Kaum Eldia
-   - Install dan jalankan kontainer:
-     ```bash
-     sudo apt update
-     sudo apt install docker.io -y
-     sudo systemctl start docker
-     sudo docker pull danielcristh0/debian-buster:1.1
-     sudo docker run -d --name EldiaWorker danielcristh0/debian-buster:1.1
-     ```
+## Nomor 1 - 5
+- Menjalankan service dari isc-dhcp-server di Tybur
 
-## 4. Konfigurasi Virtual Host untuk Worker PHP (Armin)
-   - Instalasi Apache dan PHP 7.3:
-     ```bash
-     sudo apt update
-     sudo apt install apache2 php7.3 -y
-     ```
+```markdown
+service isc-dhcp-server start
+```
 
-   - Buat file virtual host di `/etc/apache2/sites-available/eldia.conf`:
-     ```bash
-     <VirtualHost *:80>
-       ServerName bangsaeldia.com
-       DocumentRoot /var/www/eldia
-       <Directory /var/www/eldia>
-         AllowOverride All
-       </Directory>
-     </VirtualHost>
-     ```
+- Menambahkan line berikut pada file /etc/default/isc-dhcp-server di Tybur
 
-   - Aktifkan virtual host dan restart Apache:
-     ```bash
-     sudo a2ensite eldia.conf
-     sudo systemctl restart apache2
-     ```
+```markdown
+INTERFACES="eth0"
+```
 
-## 5. Testing Load Balancer dengan Apache Benchmark (Colossal)
-   - Instalasi Apache Benchmark:
-     ```bash
-     sudo apt install apache2-utils -y
-     ```
+- Membuat script untuk menghubungkan Paradis ke Tybur
 
-   - Jalankan testing:
-     ```bash
-     ab -n 6000 -c 200 http://colossal_address/
-     ab -n 1000 -c 75 http://colossal_address/
-     ```
+```markdown
+echo INTERFACESv4="eth0" > /etc/default/isc-dhcp-server
 
-## 6. Menambahkan Keamanan dengan Autentikasi di Colossal
-   - Instalasi `htpasswd` dan pembuatan file autentikasi:
-     ```bash
-     sudo apt install apache2-utils -y
-     sudo htpasswd -c /etc/nginx/supersecret/htpasswd arminannie
-     ```
+echo 'authoritative;
 
-   - Edit konfigurasi Nginx di `/etc/nginx/sites-available/colossal.conf` untuk menambahkan autentikasi:
-     ```bash
+subnet 192.237.3.0 netmask 255.255.255.0 {
+    option routers 192.237.3.0;
+    option broadcast-address 192.237.3.255;
+}
+
+subnet 192.237.4.0 netmask 255.255.255.0 {
+    option routers 192.237.4.0;
+    option broadcast-address 192.237.4.255;
+}
+
+subnet 192.237.1.0 netmask 255.255.255.0 {
+    range 192.237.1.5 192.237.1.25;
+    range 192.237.1.50 192.237.1.100;
+    option routers 192.237.1.1;
+    option broadcast-address 192.237.1.255;
+    option domain-name-servers 192.237.4.1;
+    default-lease-time 1800;
+    max-lease-time 5220;
+}
+
+subnet 192.237.2.0 netmask 255.255.255.0 {
+    range 192.237.2.9 192.237.2.27;
+    range 192.237.2.81 192.237.2.243;
+    option routers 192.237.2.1;
+    option broadcast-address 192.237.2.255;
+    option domain-name-servers 192.237.4.1;
+    default-lease-time 360;
+    max-lease-time 5220;
+} ' > /etc/dhcp/dhcpd.conf
+
+service isc-dhcp-server restart
+```
+
+Test pada client
+![Screenshot 2024-10-27 212306](https://github.com/user-attachments/assets/d7ba0b1d-bc32-4077-b8fe-6a0971e93db0)
+![Screenshot 2024-10-27 212356](https://github.com/user-attachments/assets/1b270234-e03c-4cc9-9f3c-44592b1537df)
+
+## Nomor 6
+
+Menjalankan script di bawah ini kepada node PHP Worker (Armin, Eren, Mikasa) dan mengeceknya menggunakan `lynx localhost`.
+
+```
+#/bin/bash
+
+wget 'https://drive.usercontent.google.com/u/0/uc?id=1RCy_7ptfsGXQ8_HJ8-28tts1a3EpnBlQ&export=download' -O modul3.zip
+unzip modul3.zip
+mkdir -p /var/www/eldia
+mv modul-3/* /var/www/eldia
+
+cat <<EOF >> /etc/nginx/sites-available/eldia.it08.com
+server {
+     listen 80;
+     server_name _;
+
+     root /var/www/eldia;
+     index index.php index.html index.htm;
+
      location / {
-       auth_basic "Restricted Access";
-       auth_basic_user_file /etc/nginx/supersecret/htpasswd;
+         try_files $uri $uri/ /index.php?$query_string;
      }
-     ```
 
-   - Restart Nginx:
-     ```bash
-     sudo systemctl restart nginx
-     ```
-
-## 7. Proxy Passing untuk Endpoint `/titan` di Colossal
-   - Tambahkan konfigurasi di Nginx untuk `/titan`:
-     ```bash
-     location /titan {
-       proxy_pass https://attackontitan.fandom.com/wiki/Attack_on_Titan_Wiki;
+     location ~ \.php$ {
+         include snippets/fastcgi-php.conf;
+         fastcgi_pass unix:/run/php/php7.3-fpm.sock;
+         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+         include fastcgi_params;
      }
-     ```
+}
+EOF
 
-   - Restart Nginx:
-     ```bash
-     sudo systemctl restart nginx
-     ```
+ln -s /etc/nginx/sites-available/eldia.it08.com /etc/nginx/sites-enabled/
+rm /etc/nginx/sites-enabled/default
 
-## 8. Mengatur Akses Khusus ke Warhammer
-   - Atur firewall untuk akses IP spesifik:
-     ```bash
-     sudo iptables -A INPUT -p tcp -s [Annie IP] --dport 3306 -j ACCEPT
-     sudo iptables -A INPUT -p tcp -s [Reiner IP] --dport 3306 -j ACCEPT
-     sudo iptables -A INPUT -p tcp -s [Berthold IP] --dport 3306 -j ACCEPT
-     sudo iptables -A INPUT -p tcp --dport 3306 -j DROP
-     ```
----
+service nginx restart
+```
+**Hasil**
+![image](https://github.com/user-attachments/assets/2d39ecb6-d9c0-4420-8220-31b20bd49a0d)
+![image](https://github.com/user-attachments/assets/f6564c31-b479-417c-af25-9ab8884aa39c)
+![image](https://github.com/user-attachments/assets/c6a5b710-68a6-4307-bb2d-eebb40dd5a94)
+
+## Nomor 7
+
+Membuat script untuk menginstalasi dependencies dan mengonfigurasi Nginx sebagai load balancer dengan IP worker yang ditentukan
+
+```
+#!/bin/bash
+
+# Update repositories
+echo "Updating package repositories..."
+apt-get update
+
+# Install dependencies
+echo "Installing lynx, nginx, php7.0, and php-fpm..."
+apt-get install -y lynx nginx php7.0 php7.0ab -n 6000 -c 200 http://192.237.3.3/-fpm apache2-utils
+
+# Start php-fpm and nginx services
+echo "Starting php7.0-fpm and nginx services..."
+service php7.0-fpm start
+service nginx start
+
+# Define NGINX load balancer configuration
+NGINX_CONF="/etc/nginx/sites-available/load-balancer-it08.conf"
+echo "Creating nginx load balancer configuration at $NGINX_CONF..."
+
+cat <<EOL > $NGINX_CONF
+upstream worker {
+	server 192.237.2.2; # IP Armin
+	server 192.237.2.3; # IP Eren
+	server 192.237.2.4; # IP Mikasa
+}
+
+server {
+	listen 80;
+
+	root /var/www/html;
+
+	index index.html index.htm index.nginx-debian.html;
+
+	server_name _;
+
+	location / {
+		proxy_pass http://worker;  # Mengarahkan ke grup upstream worker
+		proxy_http_version 1.1;
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection 'upgrade';
+		proxy_set_header Host $host;
+		proxy_cache_bypass $http_upgrade;
+	}
+}
+EOL
+
+# Enable the new configuration
+echo "Creating symlink for load balancer configuration..."
+ln -s $NGINX_CONF /etc/nginx/sites-enabled/load-balancer-it08
+
+# Remove default configuration
+echo "Removing default nginx configuration..."
+rm /etc/nginx/sites-enabled/default
+
+# Restart services
+echo "Restarting nginx and php7.0-fpm services..."
+service nginx restart
+service php7.0-fpm restart
+
+echo "Load balancer setup complete."
+```
+
+Tes di client dengan `ab -n 6000 -c 200 http://eldia.it08.com/`
+![Screenshot 2024-10-27 230813](https://github.com/user-attachments/assets/b7c65d6a-fd6c-4332-bd97-322434c1a4c2)
+![Screenshot 2024-10-27 230824](https://github.com/user-attachments/assets/b30e641d-56c2-46fc-8704-7fdb6c079cd1)
+
+## Nomor 8
+Untuk nomor 8, kita hanya perlu menjalankan script nomor 7 namun dengan mengganti algoritma load balancernya menjadi Round Robin (default), IP Hash, Generic Hash, dan Least Connection. Pada setiap algoritmanya, kita perlu menjalankan `ab -n 1000 -c 75 http://eldia.it08.com/`. Berikut adalah grafik RPS tiap algoritma:
+
+![image](https://github.com/user-attachments/assets/e68f8e24-590e-4057-93e8-df861f12dfc0)
+
+Untuk analisis, dapat dicek di [pdf](https://github.com/Rrrrein/Jarkom-Modul-3-IT08-2024/blob/main/IT08_LaporanArmin.pdf) yang berada di dalam repo.
+
+## Nomor 9
+Sama halnya dengan nomor 8, kita menggunakan algoritma Least Connection dengan mengurangi jumlah workernya seperti berikut ini:
+
+3 worker (default)
+```
+upstream worker {
+  server 192.237.2.2; # IP Armin
+  server 192.237.2.3; # IP Eren
+  server 192.237.2.4; # IP Mikasa
+}
+```
+
+2 worker
+```
+upstream worker {
+  server 192.237.2.2; # IP Armin
+  server 192.237.2.3; # IP Eren
+  # server 192.237.2.4; # IP Mikasa
+}
+```
+
+1 worker
+```
+upstream worker {
+  server 192.237.2.2; # IP Armin
+  # server 192.237.2.3; # IP Eren
+  # server 192.237.2.4; # IP Mikasa
+}
+```
+
+Berikut adalah grafiknya, RPS tertinggi berada pada saat 1 worker saja yang bekerja.
+
+![image](https://github.com/user-attachments/assets/40dfbfbf-62bc-413f-9773-f9f3bc96fa0f)
+
+Grafik ini juga dapat dilihat di dalam [pdf](https://github.com/Rrrrein/Jarkom-Modul-3-IT08-2024/blob/main/IT08_LaporanArmin.pdf).
+
+## Nomor 10
+Menjalankan script berikut untuk menambahkan username `arminannie` dan password `jrkmit08`
+
+```
+#/bin/bash
+
+mkdir /etc/nginx/supersecret
+htpasswd -c -b /etc/nginx/supersecret/.htpasswd arminannie jrkmit08
+
+rm -f /etc/nginx/sites-available/lb_php
+
+cat <<EOF >> /etc/nginx/sites-available/lb_php
+upstream worker {
+  server 192.237.2.2; # IP Armin
+  server 192.237.2.3; # IP Eren
+  server 192.237.2.4; # IP Mikasa
+}
+
+server {
+        listen 80;
+        server_name _;
+
+        location / {
+          proxy_pass http://worker;
+          auth_basic "Restricted Access";
+          auth_basic_user_file /etc/nginx/supersecret/.htpasswd;
+        }
+}
+EOF
+
+rm -f /etc/nginx/sites-enabled/lb_php
+ln -s /etc/nginx/sites-available/lb_php /etc/nginx/sites-enabled/
+
+service nginx restart
+```
+
+**Hasil**
+![image](https://github.com/user-attachments/assets/8d4d9ac2-39ee-407c-80ba-f1dae4e82f9a)
+![image](https://github.com/user-attachments/assets/19ebde0e-b696-4947-b03a-57daaa049d0c)
+![image](https://github.com/user-attachments/assets/e1f9c385-f30f-4de3-b6d7-1fe0ae5b7432)
+
+## Nomor 11
+
+Menjalankan script berikut dan test menggunakan `lynx eldia.it08.com/titan`.
+
+```
+#!/bin/bash
+
+rm -f /etc/nginx/sites-available/lb_php
+
+cat <<EOF >> /etc/nginx/sites-available/lb_php
+upstream worker {
+    server 192.237.2.2;
+    server 192.237.2.3;
+    server 192.237.2.4;
+}
+
+server {
+    listen 80;
+    server_name _;
+
+    location / {
+        proxy_pass http://worker;
+        auth_basic "Restricted Access";
+        auth_basic_user_file /etc/nginx/supersecret/.htpasswd;
+    }
+
+    location /titan {
+        proxy_pass https://attackontitan.fandom.com/wiki/Attack_on_Titan_Wiki;
+        proxy_set_header Host attackontitan.fandom.com;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
+    }
+}
+EOF
+
+rm -f /etc/nginx/sites-enabled/lb_php
+ln -s /etc/nginx/sites-available/lb_php /etc/nginx/sites-enabled/
+
+service nginx restart
+```
+
+**Hasil**
+![image](https://github.com/user-attachments/assets/ef2c4085-bf9f-45dc-ac34-0cd77adfaf61)
+
+## Nomor 12
+
+Menjalankan script berikut agar dapat diakses dengan IP khusus.
+
+```
+#!/bin/bash
+
+rm -f /etc/nginx/sites-available/lb_php
+
+cat <<EOF >> /etc/nginx/sites-available/lb_php
+upstream worker {
+    server 192.237.2.2;
+    server 192.237.2.3;
+    server 192.237.2.4;
+}
+
+server {
+    listen 80;
+    server_name _;
+
+    location / {
+        allow 192.237.1.77;
+        allow 192.237.1.88;
+        allow 192.237.2.144;
+        allow 192.237.2.156;
+        deny all;
+        proxy_pass http://worker;
+        auth_basic "Restricted Access";
+        auth_basic_user_file /etc/nginx/supersecret/.htpasswd;
+    }
+
+    location /titan {
+        proxy_pass https://attackontitan.fandom.com/wiki/Attack_on_Titan_Wiki;
+        proxy_set_header Host attackontitan.fandom.com;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
+    }
+}
+EOF
+
+rm -f /etc/nginx/sites-enabled/lb_php
+ln -s /etc/nginx/sites-available/lb_php /etc/nginx/sites-enabled/
+
+service nginx restart
+```
+
+Di sini kami menentukan Zeke menjadi client tetapnya, setelah itu masukkan script berikut ke dalam Tybur (DHCP Server).
+
+```
+host Zeke {
+   hardware ethernet 92:6a:4b:8f:b3:cf;
+   fixed-address 192.237.1.88;
+}
+```
+**Hasil**
+
+Jika diakses selain menggunakan client Zeke, maka Colossal tidak dapat diakses.
+
+![image](https://github.com/user-attachments/assets/025913f9-caff-4d37-bbb0-566c79f219a8)
+
+
+## Nomor 13
+
+Menjalankan script berikut pada node Warhammer.
+
+```
+#!/bin/bash
+
+cat <<EOF >> /etc/mysql/my.cnf
+[mysqld]
+skip-networking=0
+skip-bind-address
+EOF
+
+mysql -e "CREATE USER 'it08'@'%' IDENTIFIED BY 'it08';"
+mysql -e "CREATE USER 'it08'@'marley.it08.com' IDENTIFIED BY 'it08';"
+mysql -e "CREATE DATABASE db_it08;"
+mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'it08'@'%';"
+mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'it08'@'marley.it08.com';"
+mysql -e "FLUSH PRIVILEGES;"
+
+service mysql restart
+```
+
+Kemudian test pada worker Laravel (Annie, Bertholdt, Reiner) dengan perintah `mariadb --host=192.237.3.2 --port=3306 --user=it08 --password=it08 db_it08 -e "SHOW DATABASES;"`
+
+**Hasil**
+
+![image](https://github.com/user-attachments/assets/8bf6c70a-5df6-443a-b12a-b35ca3fefb1e)
+
